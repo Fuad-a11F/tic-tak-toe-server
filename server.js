@@ -1,5 +1,5 @@
 let express = require('express')
-const Game = require('../game/Game')
+const Game = require('./Game')
 let app = express()
 let http = require('http').createServer(app)
 let io = require('socket.io')(http,{
