@@ -11,15 +11,20 @@ let io = require('socket.io')(http,{
 let mainArray = {}
 
 app.get('/', (req, res) => {
-    res.send('hello')
+    res.send(200)
 })
+
+
 
 io.on('connection', (socket) => {
     socket.join('test')
     mainArray['test'] = new Game()
 
+    
     socket.on('save_player', data => {
-        mainArray['test'].setPlayer(data.name)
+        mainArray['test'].setPlayer(data)
+        io.in('test').emit('step_player', {player_1: mainArray['test'].player_1, player_2: mainArray['test'].player_2})
+
     })
 
     socket.on('get_player', () => {
@@ -31,7 +36,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('set_position', (data) => {
-        mainArray['test'].set(data.index)
+        mainArray['test'].set(data)
         if (mainArray['test'].checkWin()) {
             mainArray['test'].clear()
             io.in('test').emit('get_score', mainArray['test'].getScore())
@@ -41,6 +46,9 @@ io.on('connection', (socket) => {
             io.in('test').emit('get_score', mainArray['test'].getScore())
         }
         io.in('test').emit('set_position', mainArray['test'].get())
+        mainArray['test'].player_1.play = !mainArray['test'].player_1.play
+        mainArray['test'].player_2.play = !mainArray['test'].player_2.play
+        io.in('test').emit('step_player', {player_1: mainArray['test'].player_1, player_2: mainArray['test'].player_2})
     })
 })
 

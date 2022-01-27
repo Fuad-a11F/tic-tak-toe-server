@@ -1,8 +1,14 @@
 class Game {
     constructor() {}
 
-    player_1 = null
-    player_2 = null
+    player_1 = {
+        name: null,
+        play: true
+    }
+    player_2 = {
+        name: null,
+        play: false
+    }
     player_1_win = 0
     player_2_win = 0
     game_list = [null, null, null, null, null, null, null, null, null]
@@ -10,9 +16,9 @@ class Game {
     all = 0
 
     set(index) {
-        if (this.game_list[index - 1] == null){
+        if (this.game_list[index] == null){
             this.now == 'o' ? this.now = 'x' : this.now = 'o'
-            this.game_list[index - 1] = this.now
+            this.game_list[index] = this.now
         }
     }
 
@@ -26,11 +32,11 @@ class Game {
     }
 
     setPlayer(name) {
-        if (this.player_1 == null) {
-            this.player_1 = name
+        if (this.player_1.name == null) {
+            this.player_1.name = name
         }
         else {
-            this.player_2 = name
+            this.player_2.name = name
         }
     }
 
